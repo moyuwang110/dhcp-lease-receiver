@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHCP IP 租用信息</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">DHCP</span>
+    <h1>IP 租用信息</h1>
+  </div>
+  <div class="topbar-actions">
+    <label class="control">
+      <span>服务器</span>
+      <select id="server-select"></select>
+    </label>
+    <label class="control">
+      <span>数据日期(保留7天)</span>
+      <select id="date-select"><option value="">最新</option></select>
+    </label>
+    <label class="control">
+      <span>自动刷新</span>
+      <select id="refresh-interval">
+        <option value="0">关闭</option>
+        <option value="30">30 秒</option>
+        <option value="60" selected>60 秒</option>
+        <option value="300">5 分钟</option>
+      </select>
+    </label>
+    <button id="refresh-now" class="btn btn-primary">立即刷新</button>
+    <button id="open-namemap" class="btn">姓名映射</button>
+    <button id="export-csv" class="btn">导出 CSV</button>
+    <button id="export-xlsx" class="btn">导出 Excel</button>
+  </div>
+</header>
+
+<main>
+  <section class="filters card">
+    <div class="filters-row">
+      <input id="search-input" type="search" placeholder="搜索 主机名 / 姓名 / IP / MAC">
+      <select id="state-filter">
+        <option value="">全部状态</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Reserved">Reserved</option>
+        <option value="Declined">Declined</option>
+      </select>
+    </div>
+    <div class="filters-row meta">
+      <span id="data-info">等待数据…</span>
+      <div class="page-controls">
+        <label>每页 <select id="page-size">
+          <option>20</option><option selected>50</option>
+          <option>100</option><option>200</option>
+        </select></label>
+        <button id="prev-page" class="btn btn-sm">上一页</button>
+        <span id="page-info">-</span>
+        <button id="next-page" class="btn btn-sm">下一页</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th data-sort="HostName">主机名</th>
+          <th data-sort="AddressState">地址状态</th>
+          <th data-sort="LeaseExpiryTime">租期</th>
+          <th data-sort="ClientId">MAC地址</th>
+          <th data-sort="IPAddress">IP地址</th>
+          <th>姓名</th>
+        </tr>
+      </thead>
+      <tbody id="lease-tbody"></tbody>
+    </table>
+  </section>
+</main>
+
+<div id="toast" class="toast hidden"></div>
+
+<!-- 姓名映射管理 -->
+<div id="namemap-modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <header class="modal-header">
+      <h3>姓名映射(主机名 / IP / MAC → 姓名)</h3>
+      <button id="namemap-close" class="btn btn-sm">关闭</button>
+    </header>
+    <div class="modal-body">
+      <div class="namemap-add">
+        <input id="nm-key" placeholder="键:主机名、IP 或 MAC(不区分大小写)">
+        <input id="nm-name" placeholder="姓名">
+        <button id="nm-add" class="btn btn-primary">添加</button>
+      </div>
+      <p class="hint">匹配顺序:主机名 → IP地址 → MAC地址。命中的记录在"姓名"列显示对应姓名。</p>
+      <div class="namemap-import">
+        <input type="file" id="nm-file" accept=".xlsx,.xls,.csv,.md,.txt" hidden>
+        <button id="nm-import" class="btn btn-primary">导入文件</button>
+        <button id="nm-template" class="btn">下载模板</button>
+        <span class="hint" style="margin:0">支持 Excel(.xlsx/.xls)、CSV、Markdown 表格(.md)、TXT;第1列=主机名/IP/MAC,第2列=姓名,自动识别表头</span>
+        <span id="nm-import-result" class="import-result"></span>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>键</th><th>姓名</th><th style="width:60px">操作</th></tr></thead>
+        <tbody id="nm-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
