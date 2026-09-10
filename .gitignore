@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.venv/
+
+# 数据目录(运行期产物,部署后由 DHCP 服务器推送生成)
+data/*/history/
+data/*/latest.json
+data/namemap.json
+# 仅保留 sample 子目录作为示例
+!data/DC01/latest.json
+!data/namemap.json
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 系统
+.DS_Store
+Thumbs.db
