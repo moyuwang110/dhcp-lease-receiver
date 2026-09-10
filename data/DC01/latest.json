@@ -1,0 +1,23 @@
+{
+  "server": "DC01",
+  "collectedAt": "2026-01-01 09:00:00",
+  "receivedAt": "2026-01-01T09:00:01+08:00",
+  "leases": [
+    {
+      "IPAddress": "192.168.1.100",
+      "ScopeId": "192.168.1.0",
+      "ClientId": "00-11-22-33-44-55",
+      "HostName": "sample-pc-01",
+      "AddressState": "Active",
+      "LeaseExpiryTime": "2026-01-02 09:00:00"
+    },
+    {
+      "IPAddress": "192.168.1.101",
+      "ScopeId": "192.168.1.0",
+      "ClientId": "00-11-22-33-44-66",
+      "HostName": "sample-pc-02",
+      "AddressState": "Inactive",
+      "LeaseExpiryTime": "2026-01-02 09:00:00"
+    }
+  ]
+}
